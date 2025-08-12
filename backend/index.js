@@ -4,6 +4,7 @@ import 'dotenv/config'
 import cookieParser from 'cookie-parser'
 import connectDB from './config/db.js'
 import { userRouter } from './routes/userRoute.js'
+import summaryRouter from './routes/summaryRoute.js'
 
 const app = express()
 const port = process.env.PORT || 4000
@@ -14,7 +15,8 @@ app.use(express.json())
 app.use(cors())
 app.use(cookieParser(process.env.COOKIE_SECRET))
 
-app.use('/api/user',userRouter)
+app.use('/api',userRouter)
+app.use('/api',summaryRouter)
 
 app.get('/',(req,res)=>{
     console.log("API working")
