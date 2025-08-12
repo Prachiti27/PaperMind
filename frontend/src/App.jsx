@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Auth from './pages/Auth'
 import Dashboard from './pages/Dashboard'
 import Chat from './pages/Chat'
+import Contact from './pages/Contact'
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Route path='/auth' element={<Auth/>}/>
         <Route path='/dashboard' element={<Dashboard/>}/>
         <Route path='/chat' element={<Chat/>}/>
+        <Route path='/contact' element={<Contact/>}/>
       </Routes>
     </>
   )
