@@ -9,8 +9,8 @@ const plans = [
     period: "/month",
     features: [
       "1 AI Paper Summary / day",
-      "Save & Download chats",
-      "Basic AI chat support"
+      "Save chats",
+      "Download chats"
     ],
     highlighted: false,
   },
@@ -20,7 +20,6 @@ const plans = [
     period: "/month",
     features: [
       "Unlimited AI Paper Summaries",
-      "Priority AI chat support",
       "Save & Download chats",
       "Advanced paper analysis",
       "Early access to new features"
