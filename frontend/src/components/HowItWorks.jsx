@@ -3,26 +3,26 @@ import { motion, useAnimation } from "motion/react"
 import { useInView } from "react-intersection-observer"
 import upload_a_paper from "../assets/upload_a_paper.png"
 import save_n_download from "../assets/save_n_download.png"
-import chat_with_ai from "../assets/chat_with_ai.png"
+import sign_up from "../assets/sign_up.png"
 import ai_powered_summary from "../assets/ai_powered_summary.png"
 
 const steps = [
   {
+    title: "Sign Up",
+    desc: "Create your free account to get started quickly",
+    img: sign_up,
+    reverse: false,
+  },
+  {
     title: "Upload Your Paper",
     desc: "Drag & drop your PDF or DOCX file",
     img: upload_a_paper,
-    reverse: false,
+    reverse: true,
   },
   {
     title: "Get AI-powered Summary",
     desc: "Receive formatted paper summary instantly",
     img: ai_powered_summary,
-    reverse: true,
-  },
-  {
-    title: "Chat with AI",
-    desc: "Ask questions and explore insights",
-    img: chat_with_ai,
     reverse: false,
   },
   {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { DownloadCloud, FileCheck2, FolderCog, MessageCircleCode } from 'lucide-react'
+import { CreditCard, DownloadCloud, FileCheck2, ShieldCheck } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useInView } from 'react-intersection-observer'
 
@@ -10,14 +10,14 @@ const feat = [
     icon: FileCheck2
   },
   {
-    title: 'Ask Anything',
-    desc: 'Chat with AI to clarify and explore concepts',
-    icon: MessageCircleCode
+    title: 'Flexible Plans',
+    desc: 'Choose from free and premium plans tailored to your needs',
+    icon: CreditCard
   },
   {
-    title: 'Saved Chats',
-    desc: 'Access previous chats anytime',
-    icon: FolderCog
+    title: 'Secure & Private',
+    desc: 'Your data is encrypted and never shared with third parties',
+    icon: ShieldCheck
   },
   {
     title: 'Download & Share',

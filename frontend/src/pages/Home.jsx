@@ -5,6 +5,7 @@ import HowItWorks from '../components/HowItWorks'
 import Pricing from '../components/Pricing'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
+import ContactForm from '../components/ContactForm'
 
 const Home = () => {
   return (
@@ -26,8 +27,8 @@ const Home = () => {
       <section id='pricing'>
         <Pricing/>
       </section>
-
-        <Footer/>
+      <ContactForm/>
+      <Footer/>
     </div>
   )
 }
