@@ -1,8 +1,14 @@
 import React from 'react'
 import { Mail, User, MessageCircle } from 'lucide-react'
 import { motion } from 'motion/react'
+import toast from 'react-hot-toast'
 
 const ContactForm = () => {
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    toast.success('Message sent successfully!')
+  }
 
   return (
     <div className='mb-5'>
@@ -15,7 +21,7 @@ const ContactForm = () => {
         transition={{ duration: 0.5 }}
         className="max-w-5xl mx-auto bg-white p-8 rounded-lg shadow-lg"
       >
-        <form>
+        <form onSubmit={handleSubmit}>
           <label className="block mb-2 font-medium text-gray-700" htmlFor="name">
             Name <span className="text-red-500">*</span>
           </label>

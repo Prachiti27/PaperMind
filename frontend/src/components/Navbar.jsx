@@ -1,8 +1,35 @@
-import React from 'react'
-import { Link } from 'react-scroll'
+import React, { useContext } from 'react'
+import { Link as ScrollLink } from 'react-scroll'
+import { Link as RouterLink } from 'react-router-dom'
 import { motion } from 'motion/react'
+import { useNavigate } from 'react-router-dom'
+import ShopContext from '../context/ShopContext'
+import axios from 'axios'
+import toast from 'react-hot-toast'
 
 const Navbar = () => {
+
+  const navigate = useNavigate()
+
+  const { isLoggedIn, setIsLoggedIn } = useContext(ShopContext)
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/logout`,
+        {},
+        { withCredentials: true }
+      )
+      setIsLoggedIn(false)
+      toast.success('Logged out successfully')
+      navigate('/')
+    }
+    catch (error) {
+      console.log(error)
+      toast.error('Logout failed!')
+    }
+  }
+
   return (
     <motion.nav
       className='px-12 py-5 flex items-center justify-between'
@@ -18,38 +45,81 @@ const Navbar = () => {
       >
         PaperMind
       </h1>
-      <div
-        className='flex space-x-8 gap-10'
-        whileHover={{ scale: 1.1, color: 'rgba(79, 70, 229, 0.8)' }}
-        transition={{ type: 'spring', stiffness: 300 }}
-      >
-        <Link
-          to='hero'
-          smooth={true}
-          duration={500}
-          className='text-[#4F46E5] text-xl font-medium hover:text-[#4F46E5]/80 hover:cursor-pointer'
-        >
-          Home
-        </Link>
-        <Link to='features' smooth={true} duration={500} className='text-[#4F46E5] text-xl font-medium hover:text-[#4F46E5]/80 hover:cursor-pointer'>
-          Features
-        </Link>
-        <Link to='howitworks' smooth={true} duration={500} className='text-[#4F46E5] text-xl font-medium hover:text-[#4F46E5]/80 hover:cursor-pointer'>
-          How It Works
-        </Link>
-        <Link to='pricing' smooth={true} duration={500} className='text-[#4F46E5] text-xl font-medium hover:text-[#4F46E5]/80 hover:cursor-pointer'>
-          Pricing
-        </Link>
-      </div>
-      <button
-        className='px-6 py-2 bg-gradient-to-b from-[#4F46E5] to-[#4F46E5]/75 text-white text-xl font-semibold rounded-sm shadow-lg hover:bg-[#4F46E5]/50 tracking-wide transition duration-300'
-        whileHover={{ scale: 1.05, backgroundColor: 'rgba(79, 70, 229, 0.5)' }}
-        whileTap={{ scale: 0.95 }}
-        transition={{ type: 'spring', stiffness: 300 }}
-      >
-        Login
-      </button>
-    </motion.nav>
+      {
+        !isLoggedIn
+          ?
+          (
+            <div
+              className='flex space-x-8 gap-10'
+              whileHover={{ scale: 1.1, color: 'rgba(79, 70, 229, 0.8)' }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              <ScrollLink
+                to='hero'
+                smooth={true}
+                duration={500}
+                className='text-[#4F46E5] text-xl font-medium hover:text-[#4F46E5]/80 hover:cursor-pointer'
+              >
+                Home
+              </ScrollLink>
+              <ScrollLink to='features' smooth={true} duration={500} className='text-[#4F46E5] text-xl font-medium hover:text-[#4F46E5]/80 hover:cursor-pointer'>
+                Features
+              </ScrollLink>
+              <ScrollLink to='howitworks' smooth={true} duration={500} className='text-[#4F46E5] text-xl font-medium hover:text-[#4F46E5]/80 hover:cursor-pointer'>
+                How It Works
+              </ScrollLink>
+              <ScrollLink to='pricing' smooth={true} duration={500} className='text-[#4F46E5] text-xl font-medium hover:text-[#4F46E5]/80 hover:cursor-pointer'>
+                Pricing
+              </ScrollLink>
+            </div>
+          )
+          : (
+            <div
+              className='flex space-x-8 gap-10'
+              whileHover={{ scale: 1.1, color: 'rgba(79, 70, 229, 0.8)' }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              <RouterLink to='/dashboard' className='text-[#4F46E5] text-xl font-medium hover:text-[#4F46E5]/80 hover:cursor-pointer'>
+                Dashboard
+              </RouterLink>
+
+              <RouterLink to='/generate-summary' className='text-[#4F46E5] text-xl font-medium hover:text-[#4F46E5]/80 hover:cursor-pointer'>
+                Generate Summary
+              </RouterLink>
+
+              <RouterLink to='/contact' className='text-[#4F46E5] text-xl font-medium hover:text-[#4F46E5]/80 hover:cursor-pointer'>
+                Contact
+              </RouterLink>
+            </div>
+          )
+      }
+      {
+        isLoggedIn
+          ? (
+            <button
+              onClick={handleLogout}
+              className='px-6 py-2 bg-[#4F46E5] text-white text-xl font-semibold rounded-sm shadow-lg hover:bg-indigo-700 tracking-wide transition duration-300'
+              whileHover={{ scale: 1.05, backgroundColor: 'rgba(79, 70, 229, 0.5)' }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              Logout
+            </button>
+          )
+          :
+          (
+            <button
+              onClick={() => navigate('/login')}
+              className='px-6 py-2 bg-[#4F46E5] text-white text-xl font-semibold rounded-sm shadow-lg hover:bg-indigo-700 tracking-wide transition duration-300'
+              whileHover={{ scale: 1.05, backgroundColor: 'rgba(79, 70, 229, 0.5)' }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              Login
+            </button>
+          )
+      }
+    </motion.nav >
   )
 }
 

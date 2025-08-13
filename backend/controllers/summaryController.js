@@ -1,4 +1,4 @@
-import summaryModel from "../models/summarySchema.js"
+import summaryModel from "../models/summaryModel.js"
 import userModel from "../models/userModel.js"
 import { generateSummary } from "../service/aiService.js"
 

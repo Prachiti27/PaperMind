@@ -1,10 +1,12 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { CheckCircle, Star } from "lucide-react";
+import React, { useContext } from "react"
+import { motion } from "framer-motion"
+import { CheckCircle, Star } from "lucide-react"
+import ShopContext from "../context/ShopContext"
+import axios from "axios"
 
 const plans = [
   {
-    name: "Free",
+    name: "free",
     price: "₹0",
     period: "/month",
     features: [
@@ -15,7 +17,7 @@ const plans = [
     highlighted: false,
   },
   {
-    name: "Pro",
+    name: "pro",
     price: "₹199",
     period: "/month",
     features: [
@@ -26,9 +28,81 @@ const plans = [
     ],
     highlighted: true,
   },
-];
+]
+
+const planMap = {
+  free: 'free',
+  pro: 'premium'
+}
 
 const Pricing = () => {
+  const { user } = useContext(ShopContext)
+
+  const handlePayment = async (plan) => {
+    try {
+      const planKey = planMap[plan] || plan
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/create-order`,
+        { plan: planKey },
+        { withCredentials: true }
+      )
+
+      console.log('Order data:', data)
+
+      if (!data.order) {
+        alert(data.message)
+        return
+      }
+
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: data.order.amount,
+        currency: data.order.currency,
+        name: "PaperMind",
+        description: `${plan} Plan`,
+        order_id: data.order.id,
+        handler: async function (response) {
+          try {
+            const verifyData = await axios.post(
+              `${import.meta.env.VITE_BACKEND_URL}/api/verify-payment`,
+              {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                plan: planKey,
+                userId: user._id,
+              },
+              { withCredentials: true }
+            )
+
+            if (verifyData.data.success) {
+              alert("Payment successful! Plan updated.")
+              window.location.reload()
+            } else {
+              alert("Payment verification failed.")
+            }
+          } catch (err) {
+            console.error(err)
+            alert("Error verifying payment.")
+          }
+        },
+        prefill: {
+          email: user.email,
+          name: user.name,
+        },
+        theme: {
+          color: "#4F46E5",
+        },
+      }
+
+      const rzp = new window.Razorpay(options)
+      rzp.open()
+    } catch (error) {
+      console.error(error)
+      alert("Error creating order.")
+    }
+  }
+
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -36,12 +110,12 @@ const Pricing = () => {
       y: 0,
       transition: { duration: 0.6, staggerChildren: 0.2 },
     },
-  };
+  }
 
   const cardVariants = {
     hidden: { opacity: 0, scale: 0.9 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
-  };
+  }
 
   return (
     <section className="mx-auto px-6 py-16 max-w-5xl" id="pricing">
@@ -91,9 +165,7 @@ const Pricing = () => {
                 <li key={idx} className="flex items-center gap-2">
                   <CheckCircle
                     className={`w-5 h-5 ${
-                      plan.highlighted
-                        ? "text-white-300"
-                        : "text-[#4F46E5]"
+                      plan.highlighted ? "text-white-300" : "text-[#4F46E5]"
                     }`}
                   />
                   <span>{feature}</span>
@@ -102,6 +174,7 @@ const Pricing = () => {
             </ul>
 
             <button
+              onClick={() => handlePayment(plan.name)}
               className={`mt-6 w-full py-2 rounded-lg font-medium transition ${
                 plan.highlighted
                   ? "bg-white text-[#4F46E5] hover:bg-gray-200"
@@ -114,7 +187,7 @@ const Pricing = () => {
         ))}
       </motion.div>
     </section>
-  );
-};
+  )
+}
 
-export default Pricing;
+export default Pricing
