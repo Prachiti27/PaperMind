@@ -1,8 +1,9 @@
 import React, { useState } from "react"
 import { FileDown, Upload } from "lucide-react"
 import { jsPDF } from "jspdf"
-import axios from "axios";
-import toast from "react-hot-toast";
+import axios from "axios"
+import { Link } from "react-router-dom"
+import toast from "react-hot-toast"
 
 const Summary = () => {
   const [file, setFile] = useState(null)
@@ -99,59 +100,66 @@ const Summary = () => {
     doc.save("summary.pdf")
   }
 
-  return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50 px-4">
-      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-xl text-center">
-        <h1 className="text-2xl font-bold mb-6">Generate Research Paper Summary</h1>
-
-        <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl p-6 cursor-pointer hover:border-indigo-500 transition">
-          <Upload className="w-8 h-8 text-indigo-500 mb-2" />
-          <span className="text-gray-600">
-            {file ? file.name : "Click to upload PDF (max 10MB)"}
-          </span>
-          <input
-            type="file"
-            accept="application/pdf"
-            className="hidden"
-            onChange={handleFileChange}
-          />
-        </label>
-
-        <button
-          onClick={handleGenerateSummary}
-          disabled={loading}
-          className="mt-6 w-full bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600 transition disabled:opacity-50"
-        >
-          {loading ? "Generating..." : "Generate Summary"}
-        </button>
-
-        {summary && (
-          <div className="mt-6 text-left">
-            <h2 className="text-lg font-semibold mb-2">Generated Summary:</h2>
-            <p className="bg-gray-100 p-3 rounded-lg whitespace-pre-line">
-              Title: {summary.title || "N/A"}
-              <br />
-              Authors: {summary.authors || "N/A"}
-              <br />
-              Year: {summary.yearOfPublication || "N/A"}
-              <br />
-              Abstract: {summary.abstract || "N/A"}
-              <br />
-              Methodology: {summary.methodology || "N/A"}
-            </p>
-
-            <button
-              onClick={downloadPDF}
-              className="mt-4 flex items-center justify-center gap-2 bg-green-500 text-white w-full py-2 px-4 rounded-lg hover:bg-green-600 transition"
-            >
-              <FileDown className="w-5 h-5" />
-              Download Summary
-            </button>
-          </div>
-        )}
-      </div>
+ return (
+  <div className="flex justify-center items-center min-h-screen bg-gray-50 px-4 relative">
+    <div className="absolute top-4 right-4">
+      <Link to="/dashboard" className="text-indigo-500 font-semibold hover:underline">
+        Go to Dashboard
+      </Link>
     </div>
-  )
+
+    <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-xl text-center">
+      <h1 className="text-2xl font-bold mb-6">Generate Research Paper Summary</h1>
+
+      <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl p-6 cursor-pointer hover:border-indigo-500 transition">
+        <Upload className="w-8 h-8 text-indigo-500 mb-2" />
+        <span className="text-gray-600">
+          {file ? file.name : "Click to upload PDF (max 10MB)"}
+        </span>
+        <input
+          type="file"
+          accept="application/pdf"
+          className="hidden"
+          onChange={handleFileChange}
+        />
+      </label>
+
+      <button
+        onClick={handleGenerateSummary}
+        disabled={loading}
+        className="mt-6 w-full bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600 transition disabled:opacity-50"
+      >
+        {loading ? "Generating..." : "Generate Summary"}
+      </button>
+
+      {summary && (
+        <div className="mt-6 text-left">
+          <h2 className="text-lg font-semibold mb-2">Generated Summary:</h2>
+          <p className="bg-gray-100 p-3 rounded-lg whitespace-pre-line">
+            Title: {summary.title || "N/A"}
+            <br />
+            Authors: {summary.authors || "N/A"}
+            <br />
+            Year: {summary.yearOfPublication || "N/A"}
+            <br />
+            Abstract: {summary.abstract || "N/A"}
+            <br />
+            Methodology: {summary.methodology || "N/A"}
+          </p>
+
+          <button
+            onClick={downloadPDF}
+            className="mt-4 flex items-center justify-center gap-2 bg-green-500 text-white w-full py-2 px-4 rounded-lg hover:bg-green-600 transition"
+          >
+            <FileDown className="w-5 h-5" />
+            Download Summary
+          </button>
+        </div>
+      )}
+    </div>
+  </div>
+)
+
 }
 
 export default Summary
