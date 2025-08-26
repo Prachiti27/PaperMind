@@ -19,16 +19,18 @@ app.use(cors({
 }))
 app.use(cookieParser(process.env.COOKIE_SECRET))
 
-app.use('/api',userRouter)
-app.use('/api',summaryRouter)
-app.use('/api',paymentRouter)
+app.use('/api', userRouter)
+app.use('/api', summaryRouter)
+app.use('/api', paymentRouter)
 
-app.get('/',(req,res)=>{
+app.get('/', (req, res) => {
     console.log("API working")
 })
 
-app.listen(port,(req,res)=>{
-    console.log(`Server running on port : ${port}`)
-})
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(port, (req, res) => {
+        console.log(`Server running on port : ${port}`)
+    })
+}
 
 export default app
