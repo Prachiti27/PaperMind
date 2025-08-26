@@ -24,7 +24,7 @@ app.use('/api', summaryRouter)
 app.use('/api', paymentRouter)
 
 app.get('/', (req, res) => {
-    console.log("API working")
+    res.send("API working ✅")
 })
 
 if (process.env.NODE_ENV !== 'production') {
